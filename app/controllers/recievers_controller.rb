@@ -1,31 +1,13 @@
 class RecieversController < ApplicationController
-  before_action :set_reciever, only: %i[ show edit update destroy ]
   protect_from_forgery with: :null_session
   require 'faraday'
 
   $seconds = 3
-  # GET /recievers or /recievers.json
-  def index
-    @recievers = Reciever.all
-  end
 
-  # GET /recievers/1 or /recievers/1.json
-  def show
-  end
-
-  # GET /recievers/new
-  def new
-    @reciever = Reciever.new
-  end
-
-  # GET /recievers/1/edit
-  def edit
-  end
   #curl -X POST -d '{"attachments":"", "avatar_url": "https://i.groupme.com/123456789", "created_at": 1302623328, "group_id": "1234567890", "id": "1234567890", "name": "John", "sender_id": "12345", "sender_type": "user", "source_guid": "GUID", "system": false, "text": "someone send the kings cup rules", "user_id": "1234567890"}' -H 'Content-Type: application/json' http://localhost:3000/index
-  # POST /recievers or /recievers.json
   def create
     text = params[:text]
-    if text.downcase.include? "kings cup"
+    if ((text.downcase.include? "kings cup") || (text.downcase.include? "king cup"))
       sleep($seconds)
       conn = Faraday.new(url: "https://api.groupme.com")
       post_data = {
@@ -45,33 +27,4 @@ class RecieversController < ApplicationController
     end
     $seconds = $seconds + 0.8
   end
-
-  # PATCH/PUT /recievers/1 or /recievers/1.json
-  def update
-    respond_to do |format|
-      if @reciever.update(reciever_params)
-        format.html { redirect_to reciever_url(@reciever), notice: "Reciever was successfully updated." }
-        format.json { render :show, status: :ok, location: @reciever }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @reciever.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /recievers/1 or /recievers/1.json
-  def destroy
-    @reciever.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to recievers_url, notice: "Reciever was successfully destroyed." }
-      format.json { head :no_content }
-    end
-  end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_reciever
-      @reciever = Reciever.find(params[:id])
-    end
 end
