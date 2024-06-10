@@ -2,6 +2,8 @@ class RecieversController < ApplicationController
   before_action :set_reciever, only: %i[ show edit update destroy ]
   protect_from_forgery with: :null_session
   require 'faraday'
+
+  $seconds = 3
   # GET /recievers or /recievers.json
   def index
     @recievers = Reciever.all
@@ -23,8 +25,8 @@ class RecieversController < ApplicationController
   # POST /recievers or /recievers.json
   def create
     text = params[:text]
-    if text.include? "kings cup"
-      sleep(10)
+    if text.downcase.include? "kings cup"
+      sleep($seconds)
       conn = Faraday.new(url: "https://api.groupme.com")
       post_data = {
         bot_id: "2c56ebec9bc1552a0e6e34f7ac",
@@ -41,6 +43,7 @@ class RecieversController < ApplicationController
         request.body = JSON.generate(post_data)
       end
     end
+    $seconds = $seconds + 0.8
   end
 
   # PATCH/PUT /recievers/1 or /recievers/1.json
