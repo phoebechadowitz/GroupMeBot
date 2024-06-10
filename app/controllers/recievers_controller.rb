@@ -6,9 +6,10 @@ class RecieversController < ApplicationController
   def create
     text = params[:text]
     if ((text.downcase.include? "kings cup") || (text.downcase.include? "king cup"))
+      sleep(1.5)
       conn = Faraday.new(url: "https://api.groupme.com")
       post_data = {
-        bot_id: "2c56ebec9bc1552a0e6e34f7ac",
+        bot_id: "e3860291d1cd811da011dd0e5f",
         text: "",
         attachments: [
           {
